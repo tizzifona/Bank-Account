@@ -15,6 +15,10 @@ public class Account {
         this.monthlyCommission = 0;
     }
 
+    public float getBalance() {
+        return balance;
+    }
+
     public void deposit(float amount) {
         balance += amount;
         depositsCount++;
@@ -40,9 +44,9 @@ public class Account {
 
     public String print() {
         return "Balance: " + balance +
-               "\nDeposits Count: " + depositsCount +
-               "\nWithdrawals Count: " + withdrawalsCount +
-               "\nAnnual Rate: " + annualRate +
-               "\nMonthly Commission: " + monthlyCommission;
+                "\nDeposits Count: " + depositsCount +
+                "\nWithdrawals Count: " + withdrawalsCount +
+                "\nAnnual Rate: " + annualRate +
+                "\nMonthly Commission: " + monthlyCommission;
     }
 }
