@@ -19,6 +19,10 @@ public class CurrentAccount extends Account {
         }
     }
 
+    public float getOverdraft() {
+        return overdraft;
+    }
+
     @Override
     public void deposit(float amount) {
         if (overdraft > 0) {
@@ -36,9 +40,9 @@ public class CurrentAccount extends Account {
 
     public String print() {
         return "Balance: " + balance +
-               "\nMonthly Commission: " + monthlyCommission +
-               "\nTotal Transactions: " + (depositsCount + withdrawalsCount) +
-               "\nAnnual Rate: " + annualRate +
-               "\nOverdraft: " + overdraft;
+                "\nMonthly Commission: " + monthlyCommission +
+                "\nTotal Transactions: " + (depositsCount + withdrawalsCount) +
+                "\nAnnual Rate: " + annualRate +
+                "\nOverdraft: " + overdraft;
     }
 }
