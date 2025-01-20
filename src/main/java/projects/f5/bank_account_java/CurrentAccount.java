@@ -1,43 +1,44 @@
 package projects.f5.bank_account_java;
 
-class CurrentAccount extends Account {
-    private float overdraft = 0.0f;
+public class CurrentAccount extends Account {
+    private float overdraft;
 
-    public CurrentAccount(float initialBalance, float annualRate) {
-        super(initialBalance, annualRate);
+    public CurrentAccount(float balance, float annualRate) {
+        super(balance, annualRate);
+        this.overdraft = 0;
     }
 
     @Override
     public void withdraw(float amount) {
-        if (amount > 0) {
-            if (amount <= balance) {
-                super.withdraw(amount);
-            } else {
-                overdraft += (amount - balance);
-                balance = 0;
-                withdrawals++;
-            }
+        if (amount <= balance) {
+            super.withdraw(amount);
+        } else {
+            overdraft = amount - balance;
+            balance = 0;
+            withdrawalsCount++;
         }
     }
 
     @Override
     public void deposit(float amount) {
-        if (amount > 0) {
-            if (overdraft > 0) {
-                if (amount >= overdraft) {
-                    amount -= overdraft;
-                    overdraft = 0;
-                } else {
-                    overdraft -= amount;
-                    amount = 0;
-                }
+        if (overdraft > 0) {
+            if (amount <= overdraft) {
+                overdraft -= amount;
+            } else {
+                float remainingAmount = amount - overdraft;
+                overdraft = 0;
+                super.deposit(remainingAmount);
             }
+        } else {
             super.deposit(amount);
         }
     }
 
-    @Override
     public String print() {
-        return String.format("%s, Overdraft: %.2f", super.print(), overdraft);
+        return "Balance: " + balance +
+               "\nMonthly Commission: " + monthlyCommission +
+               "\nTotal Transactions: " + (depositsCount + withdrawalsCount) +
+               "\nAnnual Rate: " + annualRate +
+               "\nOverdraft: " + overdraft;
     }
 }

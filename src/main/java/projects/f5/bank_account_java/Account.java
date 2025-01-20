@@ -2,43 +2,47 @@ package projects.f5.bank_account_java;
 
 public class Account {
     protected float balance;
+    protected int depositsCount;
+    protected int withdrawalsCount;
     protected float annualRate;
-    protected int deposits = 0;
-    protected int withdrawals = 0;
-    protected float monthlyFee = 0.0f;
+    protected float monthlyCommission;
 
-    public Account(float initialBalance, float annualRate) {
-        this.balance = initialBalance;
+    public Account(float balance, float annualRate) {
+        this.balance = balance;
         this.annualRate = annualRate;
+        this.depositsCount = 0;
+        this.withdrawalsCount = 0;
+        this.monthlyCommission = 0;
     }
 
     public void deposit(float amount) {
-        if (amount > 0) {
-            balance += amount;
-            deposits++;
-        }
+        balance += amount;
+        depositsCount++;
     }
 
     public void withdraw(float amount) {
-        if (amount > 0 && amount <= balance) {
+        if (amount <= balance) {
             balance -= amount;
-            withdrawals++;
+            withdrawalsCount++;
         }
     }
 
     public void calculateMonthlyInterest() {
-        float monthlyInterestRate = annualRate / 12 / 100;
-        balance += balance * monthlyInterestRate;
+        float monthlyRate = annualRate / 12;
+        float monthlyInterest = balance * monthlyRate;
+        balance += monthlyInterest;
     }
 
-    public void generateMonthlyStatement() {
-        balance -= monthlyFee;
+    public void monthlyStatement() {
+        balance -= monthlyCommission;
         calculateMonthlyInterest();
-        monthlyFee = 0;
     }
 
     public String print() {
-        return String.format("Balance: %.2f, Monthly Fee: %.2f, Deposits: %d, Withdrawals: %d",
-                balance, monthlyFee, deposits, withdrawals);
+        return "Balance: " + balance +
+               "\nDeposits Count: " + depositsCount +
+               "\nWithdrawals Count: " + withdrawalsCount +
+               "\nAnnual Rate: " + annualRate +
+               "\nMonthly Commission: " + monthlyCommission;
     }
 }

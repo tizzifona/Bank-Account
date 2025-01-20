@@ -1,15 +1,11 @@
 package projects.f5.bank_account_java;
 
-class SavingsAccount extends Account {
+public class SavingsAccount extends Account {
     private boolean isActive;
 
-    public SavingsAccount(float initialBalance, float annualRate) {
-        super(initialBalance, annualRate);
-        updateAccountStatus();
-    }
-
-    private void updateAccountStatus() {
-        isActive = balance >= 10000;
+    public SavingsAccount(float balance, float annualRate) {
+        super(balance, annualRate);
+        this.isActive = balance >= 10000;
     }
 
     @Override
@@ -17,28 +13,29 @@ class SavingsAccount extends Account {
         if (isActive) {
             super.deposit(amount);
         }
-        updateAccountStatus();
     }
 
     @Override
     public void withdraw(float amount) {
-        if (isActive) {
+        if (isActive && amount <= balance) {
             super.withdraw(amount);
         }
-        updateAccountStatus();
     }
 
     @Override
-    public void generateMonthlyStatement() {
-        if (withdrawals > 4) {
-            monthlyFee += (withdrawals - 4) * 1000;
+    public void monthlyStatement() {
+        if (withdrawalsCount > 4) {
+            monthlyCommission = (withdrawalsCount - 4) * 1000;
         }
-        super.generateMonthlyStatement();
-        updateAccountStatus();
+        super.monthlyStatement();
+        isActive = balance >= 10000;
     }
 
-    @Override
     public String print() {
-        return String.format("%s, Active: %b", super.print(), isActive);
+        return "Balance: " + balance +
+                "\nMonthly Commission: " + monthlyCommission +
+                "\nTotal Transactions: " + (depositsCount + withdrawalsCount) +
+                "\nAnnual Rate: " + annualRate +
+                "\nAccount Status: " + (isActive ? "Active" : "Inactive");
     }
 }
